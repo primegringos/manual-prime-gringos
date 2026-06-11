@@ -444,7 +444,13 @@ function openVideoModal(cat, idx) {
   document.getElementById("modal-title").textContent = p.nome;
   const c = document.getElementById("modal-video-container");
   if (p.videoId && p.videoId.trim()) {
-    c.innerHTML = `<iframe src="https://www.youtube.com/embed/${p.videoId.trim()}?rel=0&modestbranding=1" allowfullscreen></iframe>`;
+    // Suporta links normais, Shorts e URLs completas
+    let vid = p.videoId.trim();
+    // Se colou o link completo, extrai o ID
+    if (vid.includes('shorts/')) vid = vid.split('shorts/')[1].split('?')[0];
+    else if (vid.includes('watch?v=')) vid = vid.split('watch?v=')[1].split('&')[0];
+    else if (vid.includes('youtu.be/')) vid = vid.split('youtu.be/')[1].split('?')[0];
+    c.innerHTML = `<iframe src="https://www.youtube.com/embed/${vid}?rel=0&modestbranding=1" allowfullscreen></iframe>`;
   } else {
     c.innerHTML = `<div class="no-video"><span>🎬</span><div>Vídeo em breve</div><div style="font-size:12px">Este produto ainda não possui vídeo</div></div>`;
   }
