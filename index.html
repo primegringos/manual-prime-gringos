@@ -384,19 +384,55 @@ const CATS = {
 // ============================================================
 // STORAGE — salva tudo no navegador
 // ============================================================
-function loadData() {
+// ============================================================
+// BANCO DE DADOS ONLINE — Firebase Realtime Database
+// Os produtos ficam salvos na nuvem e aparecem em qualquer
+// dispositivo que acessar o site.
+// ============================================================
+const FIREBASE_URL = "https://manual-prime-gringos-default-rtdb.firebaseio.com";
+
+let db = { playbum:[], nelux:[], vaylon:[], prime:[], ferramentas:[] };
+let dbCarregado = false;
+
+async function loadData() {
   try {
-    const d = localStorage.getItem("pg_produtos");
-    if (d) return JSON.parse(d);
-  } catch(e) {}
-  return { playbum:[], nelux:[], vaylon:[], prime:[], ferramentas:[] };
+    const res = await fetch(FIREBASE_URL + "/produtos.json");
+    const data = await res.json();
+    if (data) {
+      db = {
+        playbum:     data.playbum     || [],
+        nelux:       data.nelux       || [],
+        vaylon:      data.vaylon      || [],
+        prime:       data.prime       || [],
+        ferramentas: data.ferramentas || []
+      };
+    }
+  } catch(e) {
+    console.warn("Erro ao carregar dados:", e);
+  }
+  dbCarregado = true;
 }
 
-function saveData(data) {
-  localStorage.setItem("pg_produtos", JSON.stringify(data));
+async function saveData(data) {
+  try {
+    await fetch(FIREBASE_URL + "/produtos.json", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+  } catch(e) {
+    console.warn("Erro ao salvar dados:", e);
+    showToast("⚠️ Erro ao salvar. Verifique sua conexão.");
+  }
 }
 
-let db = loadData();
+// Carregar dados ao iniciar
+loadData().then(() => {
+  const hash = window.location.hash.replace("#","");
+  if (hash && hash !== "admin" && hash !== "login" && db[hash]) {
+    openCategory(hash);
+  }
+});
 
 // ============================================================
 // NAVEGAÇÃO
