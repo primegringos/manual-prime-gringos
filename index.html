@@ -1,1 +1,687 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual de Instruções e Utilizações — Prime Gringos</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f4f4f4; color:#222; min-height:100vh; }
+
+/* HEADER */
+header { background:#1a1a2e; color:#fff; text-align:center; padding:28px 20px 20px; }
+header .brand-badge { background:#e63946; color:#fff; font-weight:700; font-size:13px; padding:4px 12px; border-radius:20px; letter-spacing:1px; display:inline-block; margin-bottom:10px; }
+header h1 { font-size:22px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+header p { font-size:13px; color:#aaa; margin-top:6px; }
+
+/* PAGES */
+.page { display:none; }
+.page.active { display:block; }
+
+/* CATEGORIAS */
+.categories { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; padding:28px 20px; max-width:900px; margin:0 auto; }
+.cat-card { background:#fff; border-radius:14px; padding:28px 20px; text-align:center; cursor:pointer; border:2px solid transparent; transition:transform 0.15s,box-shadow 0.15s; box-shadow:0 2px 8px rgba(0,0,0,0.07); }
+.cat-card:hover { transform:translateY(-3px); box-shadow:0 6px 18px rgba(0,0,0,0.12); }
+.cat-card.playbum { border-color:#e63946; }
+.cat-card.nelux   { border-color:#2196f3; }
+.cat-card.vaylon  { border-color:#9c27b0; }
+.cat-card.prime   { border-color:#ff9800; }
+.cat-icon { font-size:44px; margin-bottom:12px; display:block; }
+.cat-card h2 { font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#1a1a2e; }
+.cat-card .sub { font-size:12px; color:#888; margin-top:4px; }
+.badge { font-size:11px; padding:3px 10px; border-radius:20px; font-weight:700; margin-top:8px; display:inline-block; }
+.badge-playbum { background:#fde8ea; color:#c0192a; }
+.badge-nelux   { background:#e3f2fd; color:#1565c0; }
+.badge-vaylon  { background:#f3e5f5; color:#6a1b9a; }
+.badge-prime   { background:#fff3e0; color:#e65100; }
+.badge-ferramentas { background:#e8f5e9; color:#1b5e20; }
+
+/* PÁGINA DE PRODUTO */
+.product-page { max-width:860px; margin:0 auto; padding:20px; }
+.back-btn { display:inline-flex; align-items:center; gap:8px; background:#1a1a2e; color:#fff; border:none; border-radius:8px; padding:10px 18px; font-size:14px; cursor:pointer; margin-bottom:20px; font-weight:600; }
+.back-btn:hover { background:#2c2c50; }
+.page-title { font-size:20px; font-weight:700; margin-bottom:6px; color:#1a1a2e; text-transform:uppercase; letter-spacing:1px; }
+.page-sub { font-size:13px; color:#888; margin-bottom:22px; }
+.empty-msg { text-align:center; color:#aaa; padding:40px 20px; font-size:14px; }
+
+/* GRID DE PRODUTOS */
+.products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:16px; }
+.product-card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.07); border:1.5px solid #eee; transition:transform 0.15s,box-shadow 0.15s; }
+.product-card:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,0,0,0.13); }
+.product-thumb { height:155px; display:flex; align-items:center; justify-content:center; font-size:50px; background:#f0f0f0; overflow:hidden; }
+.product-thumb img { width:100%; height:100%; object-fit:contain; background:#f0f0f0; }
+.modal-desc { padding:14px 18px 18px; border-top:1px solid #eee; }
+.modal-desc-titulo { font-size:13px; font-weight:700; color:#1a1a2e; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; }
+.modal-desc-texto { font-size:13px; color:#444; line-height:1.6; }
+.product-info { padding:13px; }
+.product-info h3 { font-size:13px; font-weight:700; color:#1a1a2e; margin-bottom:3px; }
+.product-info p { font-size:11px; color:#888; }
+.watch-btn { display:flex; align-items:center; justify-content:center; gap:6px; color:#fff; border:none; border-radius:6px; padding:8px; font-size:12px; font-weight:700; margin-top:10px; cursor:pointer; width:100%; }
+.watch-btn.red    { background:#e63946; }
+.watch-btn.blue   { background:#2196f3; }
+.watch-btn.purple { background:#9c27b0; }
+.watch-btn.orange { background:#ff9800; }
+.watch-btn.green  { background:#388e3c; }
+.watch-btn:hover { opacity:0.88; }
+
+/* MODAL VÍDEO */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.78); z-index:999; align-items:center; justify-content:center; padding:16px; }
+.modal-overlay.open { display:flex; }
+.modal-box { background:#fff; border-radius:16px; width:100%; max-width:680px; overflow:hidden; }
+.modal-header { background:#1a1a2e; color:#fff; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; }
+.modal-header h3 { font-size:15px; }
+.modal-close { background:none; border:none; color:#fff; font-size:22px; cursor:pointer; }
+.modal-video { position:relative; padding-bottom:56.25%; background:#000; }
+.modal-video iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
+.modal-video .no-video { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#aaa; font-size:14px; gap:10px; }
+.modal-video .no-video span { font-size:44px; }
+
+/* FOOTER */
+footer { background:#1a1a2e; color:#ccc; padding:36px 20px 24px; margin-top:40px; }
+.footer-inner { max-width:860px; margin:0 auto; }
+.footer-title { color:#fff; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+.footer-sub { font-size:12px; color:#888; margin-bottom:22px; }
+.footer-contacts { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; margin-bottom:28px; }
+.footer-contact-card { background:#252540; border-radius:10px; padding:14px 16px; display:flex; align-items:center; gap:12px; text-decoration:none; color:#ddd; transition:background 0.18s; }
+.footer-contact-card:hover { background:#32325a; color:#fff; }
+.fc-icon { font-size:26px; flex-shrink:0; }
+.fc-label { font-size:11px; color:#888; text-transform:uppercase; letter-spacing:0.5px; }
+.fc-value { font-size:13px; font-weight:600; color:#fff; margin-top:2px; }
+.footer-divider { border:none; border-top:1px solid #2e2e50; margin:0 0 16px; }
+.footer-bottom { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; font-size:12px; color:#666; }
+.footer-site-link { background:#e63946; color:#fff !important; padding:6px 14px; border-radius:20px; font-size:12px; font-weight:700; text-decoration:none; }
+.footer-site-link:hover { background:#c0192a; }
+
+/* ===== ADMIN ===== */
+.admin-wrap { max-width:860px; margin:0 auto; padding:20px; }
+.admin-header-bar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:24px; }
+.admin-title { font-size:20px; font-weight:700; color:#1a1a2e; }
+.admin-logout { background:#e63946; color:#fff; border:none; border-radius:8px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer; }
+
+.admin-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+.admin-tab { padding:8px 18px; border-radius:8px; border:2px solid #ddd; background:#fff; font-size:13px; font-weight:700; cursor:pointer; color:#555; transition:all 0.15s; }
+.admin-tab.active { background:#1a1a2e; color:#fff; border-color:#1a1a2e; }
+
+.admin-form-card { background:#fff; border-radius:14px; padding:22px; box-shadow:0 2px 8px rgba(0,0,0,0.07); margin-bottom:24px; }
+.admin-form-card h3 { font-size:15px; font-weight:700; color:#1a1a2e; margin-bottom:16px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+.form-col { display:flex; flex-direction:column; gap:5px; }
+.form-col.full { grid-column:1/-1; }
+.form-col label { font-size:12px; font-weight:700; color:#555; text-transform:uppercase; letter-spacing:0.5px; }
+.form-col input { padding:10px 12px; border:1.5px solid #ddd; border-radius:8px; font-size:14px; outline:none; transition:border-color 0.2s; }
+.form-col input:focus { border-color:#1a1a2e; }
+.form-hint { font-size:11px; color:#aaa; margin-top:3px; }
+.btn-add { background:#1a1a2e; color:#fff; border:none; border-radius:8px; padding:11px 24px; font-size:14px; font-weight:700; cursor:pointer; margin-top:4px; }
+.btn-add:hover { background:#2c2c50; }
+.btn-add.green { background:#388e3c; }
+.btn-add.green:hover { background:#2e7d32; }
+
+.admin-product-list { display:flex; flex-direction:column; gap:10px; }
+.admin-product-item { background:#fff; border-radius:12px; padding:14px 16px; display:flex; align-items:center; gap:14px; box-shadow:0 1px 4px rgba(0,0,0,0.06); border:1.5px solid #eee; }
+.admin-product-thumb { width:54px; height:54px; border-radius:8px; background:#f0f0f0; overflow:hidden; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:26px; }
+.admin-product-thumb img { width:100%; height:100%; object-fit:cover; }
+.admin-product-info { flex:1; min-width:0; }
+.admin-product-info .p-name { font-size:14px; font-weight:700; color:#1a1a2e; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.admin-product-info .p-desc { font-size:12px; color:#888; margin-top:2px; }
+.admin-product-info .p-tags { display:flex; gap:6px; margin-top:5px; flex-wrap:wrap; }
+.p-tag { font-size:11px; padding:2px 8px; border-radius:20px; font-weight:600; }
+.p-tag.has-foto  { background:#e8f5e9; color:#2e7d32; }
+.p-tag.no-foto   { background:#f5f5f5; color:#aaa; }
+.p-tag.has-video { background:#e3f2fd; color:#1565c0; }
+.p-tag.no-video  { background:#fff3e0; color:#e65100; }
+.admin-actions { display:flex; gap:8px; flex-shrink:0; }
+.btn-edit { background:#1a1a2e; color:#fff; border:none; border-radius:7px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer; }
+.btn-edit:hover { background:#2c2c50; }
+.btn-del { background:#e63946; color:#fff; border:none; border-radius:7px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer; }
+.btn-del:hover { background:#c0192a; }
+
+/* MODAL EDIT */
+.modal-edit-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center; padding:16px; }
+.modal-edit-overlay.open { display:flex; }
+.modal-edit-box { background:#fff; border-radius:16px; width:100%; max-width:540px; overflow:hidden; max-height:90vh; overflow-y:auto; }
+.modal-edit-header { background:#1a1a2e; color:#fff; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; }
+.modal-edit-header h3 { font-size:15px; }
+.modal-edit-body { padding:20px; }
+.modal-edit-body .form-row { grid-template-columns:1fr; }
+.btn-save { background:#388e3c; color:#fff; border:none; border-radius:8px; padding:11px 24px; font-size:14px; font-weight:700; cursor:pointer; width:100%; margin-top:8px; }
+.btn-save:hover { background:#2e7d32; }
+
+/* LOGIN */
+.login-wrap { min-height:70vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+.login-box { background:#fff; border-radius:16px; padding:36px 32px; width:100%; max-width:360px; box-shadow:0 4px 20px rgba(0,0,0,0.1); text-align:center; }
+.login-box .lock { font-size:48px; margin-bottom:12px; }
+.login-box h2 { font-size:18px; font-weight:700; color:#1a1a2e; margin-bottom:6px; }
+.login-box p { font-size:13px; color:#888; margin-bottom:20px; }
+.login-box input { width:100%; padding:12px; border:1.5px solid #ddd; border-radius:8px; font-size:15px; outline:none; text-align:center; letter-spacing:4px; margin-bottom:12px; }
+.login-box input:focus { border-color:#1a1a2e; }
+.login-btn { width:100%; background:#1a1a2e; color:#fff; border:none; border-radius:8px; padding:12px; font-size:15px; font-weight:700; cursor:pointer; }
+.login-btn:hover { background:#2c2c50; }
+.login-error { color:#e63946; font-size:13px; margin-top:8px; display:none; }
+
+.toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#1a1a2e; color:#fff; padding:12px 24px; border-radius:30px; font-size:14px; font-weight:600; z-index:2000; opacity:0; transition:opacity 0.3s; pointer-events:none; }
+.toast.show { opacity:1; }
+
+@media(max-width:520px) {
+  .form-row { grid-template-columns:1fr; }
+  .admin-product-item { flex-wrap:wrap; }
+  .admin-actions { width:100%; }
+  .btn-edit, .btn-del { flex:1; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Manual de Instruções e Utilizações do Produto</h1>
+  <p>Selecione a categoria do seu produto para acessar o manual</p>
+</header>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="categories" id="home-cats">
+    <div class="cat-card playbum" onclick="openCategory('playbum')">
+      <span class="cat-icon">🧸</span>
+      <h2>Brinquedos</h2>
+      <div class="sub">Instruções de uso e montagem</div>
+      <span class="badge badge-playbum">PLAYBUM</span>
+    </div>
+    <div class="cat-card nelux" onclick="openCategory('nelux')">
+      <span class="cat-icon">🏠</span>
+      <h2>Utilidade Doméstica</h2>
+      <div class="sub">Instruções de uso e cuidados</div>
+      <span class="badge badge-nelux">NELUX</span>
+    </div>
+    <div class="cat-card vaylon" onclick="openCategory('vaylon')">
+      <span class="cat-icon">👗</span>
+      <h2>Moda</h2>
+      <div class="sub">Instruções de uso e conservação</div>
+      <span class="badge badge-vaylon">VAYLON</span>
+    </div>
+    <div class="cat-card prime" onclick="openCategory('prime')">
+      <span class="cat-icon">⭐</span>
+      <h2>Prime Gringos</h2>
+      <div class="sub">Linha geral de produtos</div>
+      <span class="badge badge-prime">PRIME GRINGOS</span>
+    </div>
+  </div>
+</div>
+
+<!-- PÁGINA DE CATEGORIA -->
+<div id="page-cat" class="page">
+  <div class="product-page">
+    <button class="back-btn" onclick="goHome()">← Voltar</button>
+    <div class="page-title" id="cat-title"></div>
+    <div class="page-sub">Clique no produto para assistir o vídeo de instruções</div>
+    <div class="products-grid" id="cat-grid"></div>
+  </div>
+</div>
+
+<!-- MODAL VÍDEO -->
+<div class="modal-overlay" id="modal" onclick="closeVideoModal(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modal-title">Instruções do Produto</h3>
+      <button class="modal-close" onclick="closeVideoModal()">✕</button>
+    </div>
+    <div class="modal-video" id="modal-video-container"></div>
+    <div class="modal-desc" id="modal-desc"></div>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div id="page-login" class="page">
+  <div class="login-wrap">
+    <div class="login-box">
+      <div class="lock">🔐</div>
+      <h2>Área Administrativa</h2>
+      <p>Digite a senha para acessar o painel</p>
+      <input type="password" id="login-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="login-btn" onclick="doLogin()">Entrar</button>
+      <div class="login-error" id="login-error">Senha incorreta. Tente novamente.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PAINEL -->
+<div id="page-admin" class="page">
+  <div class="admin-wrap">
+    <div class="admin-header-bar">
+      <div class="admin-title">⚙️ Painel Administrativo</div>
+      <button class="admin-logout" onclick="adminLogout()">Sair</button>
+    </div>
+
+    <div class="admin-tabs" id="admin-tabs"></div>
+
+    <div class="admin-form-card">
+      <h3>➕ Adicionar Produto</h3>
+      <div class="form-row">
+        <div class="form-col">
+          <label>Nome do Produto *</label>
+          <input type="text" id="f-nome" placeholder="Ex: Carrinho Dinossauro">
+        </div>
+        <div class="form-col">
+          <label>Descrição curta *</label>
+          <input type="text" id="f-desc" placeholder="Ex: Montagem e funcionamento">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-col">
+          <label>Emoji (quando não tiver foto)</label>
+          <input type="text" id="f-emoji" placeholder="🧸" maxlength="4">
+        </div>
+        <div class="form-col">
+          <label>Link do Vídeo (YouTube ou Google Drive)</label>
+          <input type="text" id="f-video" placeholder="Cole o link do YouTube ou Google Drive">
+          <div class="form-hint">YouTube: link completo ou ID | Google Drive: link de compartilhamento</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-col full">
+          <label>URL da Foto de Capa</label>
+          <input type="text" id="f-foto" placeholder="Ex: https://i.imgur.com/abc123.jpg">
+          <div class="form-hint">Suba a foto no imgur.com → clique direito na imagem → "Copiar endereço da imagem"</div>
+        </div>
+      </div>
+      <button class="btn-add" onclick="addProduto()">✅ Adicionar Produto</button>
+    </div>
+
+    <div class="admin-form-card">
+      <h3 id="list-title">📋 Produtos Cadastrados</h3>
+      <div class="admin-product-list" id="admin-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDITAR -->
+<div class="modal-edit-overlay" id="modal-edit">
+  <div class="modal-edit-box">
+    <div class="modal-edit-header">
+      <h3>✏️ Editar Produto</h3>
+      <button class="modal-close" onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="modal-edit-body">
+      <input type="hidden" id="e-cat">
+      <input type="hidden" id="e-idx">
+      <div class="form-row">
+        <div class="form-col full">
+          <label>Nome do Produto *</label>
+          <input type="text" id="e-nome">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-col full">
+          <label>Descrição curta</label>
+          <input type="text" id="e-desc">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-col full">
+          <label>Emoji</label>
+          <input type="text" id="e-emoji" maxlength="4">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-col full">
+          <label>URL da Foto de Capa</label>
+          <input type="text" id="e-foto">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-col full">
+          <label>Link do Vídeo (YouTube ou Google Drive)</label>
+          <input type="text" id="e-video">
+          <div class="form-hint">YouTube: link completo ou ID | Google Drive: link de compartilhamento</div>
+        </div>
+      </div>
+      <button class="btn-save" onclick="saveProduto()">💾 Salvar Alterações</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-title">Central de Atendimento</div>
+    <div class="footer-sub">Dúvidas sobre seu produto? Fale com a gente!</div>
+    <div class="footer-contacts">
+      <a href="tel:11989670872" class="footer-contact-card">
+        <span class="fc-icon">📞</span>
+        <div><div class="fc-label">Telefone</div><div class="fc-value">(11) 98967-0872</div></div>
+      </a>
+      <a href="https://api.whatsapp.com/send?phone=5511989670872" target="_blank" class="footer-contact-card">
+        <span class="fc-icon">💬</span>
+        <div><div class="fc-label">WhatsApp</div><div class="fc-value">(11) 98967-0872</div></div>
+      </a>
+      <a href="mailto:sac@primegringos.com.br" class="footer-contact-card">
+        <span class="fc-icon">✉️</span>
+        <div><div class="fc-label">E-mail</div><div class="fc-value">sac@primegringos.com.br</div></div>
+      </a>
+    </div>
+    <hr class="footer-divider">
+    <div class="footer-bottom">
+      <span>© Prime Gringos — Manual de Instruções e Utilizações</span>
+      <a href="https://www.primegringos.com.br" target="_blank" class="footer-site-link">🌐 www.primegringos.com.br</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+// CONFIGURAÇÕES — altere aqui se quiser mudar a senha
+// ============================================================
+const ADMIN_SENHA = "primegringos2024";
+
+const CATS = {
+  playbum:      { label:"🧸 Brinquedos — Playbum",        cor:"red",    tab:"Brinquedos" },
+  nelux:        { label:"🏠 Utilidade Doméstica — Nelux",  cor:"blue",   tab:"Utilidade Doméstica" },
+  vaylon:       { label:"👗 Moda — Vaylon",                cor:"purple", tab:"Moda" },
+  prime:        { label:"⭐ Prime Gringos",                cor:"orange", tab:"Prime Gringos" },
+  ferramentas:  { label:"🔧 Ferramentas",                  cor:"green",  tab:"Ferramentas" }
+};
+
+// ============================================================
+// STORAGE — salva tudo no navegador
+// ============================================================
+// ============================================================
+// BANCO DE DADOS ONLINE — Firebase Realtime Database
+// Os produtos ficam salvos na nuvem e aparecem em qualquer
+// dispositivo que acessar o site.
+// ============================================================
+const FIREBASE_URL = "https://manual-prime-gringos-default-rtdb.firebaseio.com";
+
+let db = { playbum:[], nelux:[], vaylon:[], prime:[], ferramentas:[] };
+let dbCarregado = false;
+
+async function loadData() {
+  try {
+    const res = await fetch(FIREBASE_URL + "/produtos.json");
+    const data = await res.json();
+    if (data) {
+      db = {
+        playbum:     data.playbum     || [],
+        nelux:       data.nelux       || [],
+        vaylon:      data.vaylon      || [],
+        prime:       data.prime       || [],
+        ferramentas: data.ferramentas || []
+      };
+    }
+  } catch(e) {
+    console.warn("Erro ao carregar dados:", e);
+  }
+  dbCarregado = true;
+}
+
+async function saveData(data) {
+  try {
+    await fetch(FIREBASE_URL + "/produtos.json", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+  } catch(e) {
+    console.warn("Erro ao salvar dados:", e);
+    showToast("⚠️ Erro ao salvar. Verifique sua conexão.");
+  }
+}
+
+// Carregar dados ao iniciar
+loadData().then(() => {
+  const hash = window.location.hash.replace("#","");
+  if (hash && hash !== "admin" && hash !== "login" && db[hash]) {
+    openCategory(hash);
+  }
+});
+
+// ============================================================
+// NAVEGAÇÃO
+// ============================================================
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function goHome() {
+  showPage("page-home");
+  history.pushState("", document.title, window.location.pathname);
+}
+
+function openCategory(cat) {
+  const cfg = CATS[cat];
+  document.getElementById("cat-title").textContent = cfg.label;
+  const grid = document.getElementById("cat-grid");
+  grid.innerHTML = "";
+  const lista = db[cat] || [];
+  if (lista.length === 0) {
+    grid.innerHTML = '<div class="empty-msg">Nenhum produto cadastrado nesta categoria ainda.</div>';
+  } else {
+    lista.forEach((p, i) => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+      const thumb = p.foto && p.foto.trim()
+        ? `<img src="${p.foto}" alt="${p.nome}" onerror="this.parentElement.innerHTML='<span>${p.emoji||"📦"}</span>'">`
+        : `<span>${p.emoji||"📦"}</span>`;
+      card.innerHTML = `
+        <div class="product-thumb">${thumb}</div>
+        <div class="product-info">
+          <h3>${p.nome}</h3>
+          <p>${p.desc||""}</p>
+          <button class="watch-btn ${cfg.cor}" onclick="openVideoModal('${cat}',${i})">▶ Ver Instruções</button>
+        </div>`;
+      grid.appendChild(card);
+    });
+  }
+  showPage("page-cat");
+}
+
+// ============================================================
+// MODAL VÍDEO
+// ============================================================
+function openVideoModal(cat, idx) {
+  const p = db[cat][idx];
+  document.getElementById("modal-title").textContent = p.nome;
+  document.getElementById("modal-desc").innerHTML = `
+    <div class="modal-desc-titulo">📋 Manual de Instruções e Utilização do Produto</div>
+    <div class="modal-desc-texto">${p.desc || "Nenhuma descrição cadastrada."}</div>
+  `;
+  const c = document.getElementById("modal-video-container");
+  if (p.videoId && p.videoId.trim()) {
+    let vid = p.videoId.trim();
+    let iframeSrc = "";
+
+    // Google Drive
+    if (vid.includes("drive.google.com")) {
+      let fileId = "";
+      if (vid.includes("/file/d/")) fileId = vid.split("/file/d/")[1].split("/")[0];
+      else if (vid.includes("id=")) fileId = vid.split("id=")[1].split("&")[0];
+      if (fileId) iframeSrc = `https://drive.google.com/file/d/${fileId}/preview`;
+    }
+    // YouTube
+    else {
+      if (vid.includes('shorts/')) vid = vid.split('shorts/')[1].split('?')[0];
+      else if (vid.includes('watch?v=')) vid = vid.split('watch?v=')[1].split('&')[0];
+      else if (vid.includes('youtu.be/')) vid = vid.split('youtu.be/')[1].split('?')[0];
+      iframeSrc = `https://www.youtube.com/embed/${vid}?rel=0&modestbranding=1`;
+    }
+
+    if (iframeSrc) {
+      c.innerHTML = `<iframe src="${iframeSrc}" allowfullscreen allow="autoplay"></iframe>`;
+    } else {
+      c.innerHTML = `<div class="no-video"><span>🎬</span><div>Link inválido</div><div style="font-size:12px">Verifique o link do vídeo</div></div>`;
+    }
+  } else {
+    c.innerHTML = `<div class="no-video"><span>🎬</span><div>Vídeo em breve</div><div style="font-size:12px">Este produto ainda não possui vídeo</div></div>`;
+  }
+  document.getElementById("modal").classList.add("open");
+}
+
+function closeVideoModal(event) {
+  if (event && event.target !== document.getElementById("modal")) return;
+  document.getElementById("modal").classList.remove("open");
+  document.getElementById("modal-video-container").innerHTML = "";
+}
+
+// ============================================================
+// ADMIN LOGIN
+// ============================================================
+function doLogin() {
+  const v = document.getElementById("login-input").value;
+  const err = document.getElementById("login-error");
+  if (v === ADMIN_SENHA) {
+    err.style.display = "none";
+    document.getElementById("login-input").value = "";
+    openAdmin();
+  } else {
+    err.style.display = "block";
+  }
+}
+
+function adminLogout() {
+  currentAdminCat = "playbum";
+  showPage("page-home");
+}
+
+// ============================================================
+// ADMIN PAINEL
+// ============================================================
+let currentAdminCat = "playbum";
+
+function openAdmin() {
+  buildAdminTabs();
+  renderAdminList();
+  showPage("page-admin");
+}
+
+function buildAdminTabs() {
+  const wrap = document.getElementById("admin-tabs");
+  wrap.innerHTML = "";
+  Object.entries(CATS).forEach(([key, cfg]) => {
+    const btn = document.createElement("button");
+    btn.className = "admin-tab" + (key === currentAdminCat ? " active" : "");
+    btn.textContent = cfg.tab;
+    btn.onclick = () => { currentAdminCat = key; buildAdminTabs(); renderAdminList(); };
+    wrap.appendChild(btn);
+  });
+}
+
+function renderAdminList() {
+  const list = document.getElementById("admin-list");
+  const titulo = document.getElementById("list-title");
+  const cfg = CATS[currentAdminCat];
+  titulo.textContent = "📋 Produtos — " + cfg.tab;
+  const items = db[currentAdminCat] || [];
+  list.innerHTML = "";
+  if (items.length === 0) {
+    list.innerHTML = '<div style="color:#aaa;font-size:13px;padding:12px 0">Nenhum produto cadastrado ainda. Adicione acima!</div>';
+    return;
+  }
+  items.forEach((p, i) => {
+    const div = document.createElement("div");
+    div.className = "admin-product-item";
+    const thumb = p.foto && p.foto.trim()
+      ? `<img src="${p.foto}" alt="${p.nome}" onerror="this.innerHTML='${p.emoji||"📦"}'">` 
+      : `${p.emoji||"📦"}`;
+    div.innerHTML = `
+      <div class="admin-product-thumb">${thumb}</div>
+      <div class="admin-product-info">
+        <div class="p-name">${p.nome}</div>
+        <div class="p-desc">${p.desc||""}</div>
+        <div class="p-tags">
+          <span class="p-tag ${p.foto&&p.foto.trim()?'has-foto':'no-foto'}">${p.foto&&p.foto.trim()?"✅ Foto":"📷 Sem foto"}</span>
+          <span class="p-tag ${p.videoId&&p.videoId.trim()?'has-video':'no-video'}">${p.videoId&&p.videoId.trim()?"▶ Vídeo ok":"🎬 Sem vídeo"}</span>
+        </div>
+      </div>
+      <div class="admin-actions">
+        <button class="btn-edit" onclick="openEditModal('${currentAdminCat}',${i})">✏️ Editar</button>
+        <button class="btn-del" onclick="deleteProduto('${currentAdminCat}',${i})">🗑️ Excluir</button>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function addProduto() {
+  const nome = document.getElementById("f-nome").value.trim();
+  const desc = document.getElementById("f-desc").value.trim();
+  const emoji = document.getElementById("f-emoji").value.trim() || "📦";
+  const foto = document.getElementById("f-foto").value.trim();
+  const videoId = document.getElementById("f-video").value.trim();
+  if (!nome) { showToast("⚠️ Preencha o nome do produto!"); return; }
+  if (!db[currentAdminCat]) db[currentAdminCat] = [];
+  db[currentAdminCat].push({ nome, desc, emoji, foto, videoId });
+  saveData(db);
+  document.getElementById("f-nome").value = "";
+  document.getElementById("f-desc").value = "";
+  document.getElementById("f-emoji").value = "";
+  document.getElementById("f-foto").value = "";
+  document.getElementById("f-video").value = "";
+  renderAdminList();
+  showToast("✅ Produto adicionado com sucesso!");
+}
+
+function deleteProduto(cat, idx) {
+  if (!confirm("Tem certeza que deseja excluir este produto?")) return;
+  db[cat].splice(idx, 1);
+  saveData(db);
+  renderAdminList();
+  showToast("🗑️ Produto excluído!");
+}
+
+function openEditModal(cat, idx) {
+  const p = db[cat][idx];
+  document.getElementById("e-cat").value = cat;
+  document.getElementById("e-idx").value = idx;
+  document.getElementById("e-nome").value = p.nome || "";
+  document.getElementById("e-desc").value = p.desc || "";
+  document.getElementById("e-emoji").value = p.emoji || "";
+  document.getElementById("e-foto").value = p.foto || "";
+  document.getElementById("e-video").value = p.videoId || "";
+  document.getElementById("modal-edit").classList.add("open");
+}
+
+function closeEditModal() {
+  document.getElementById("modal-edit").classList.remove("open");
+}
+
+function saveProduto() {
+  const cat = document.getElementById("e-cat").value;
+  const idx = parseInt(document.getElementById("e-idx").value);
+  db[cat][idx] = {
+    nome: document.getElementById("e-nome").value.trim(),
+    desc: document.getElementById("e-desc").value.trim(),
+    emoji: document.getElementById("e-emoji").value.trim() || "📦",
+    foto: document.getElementById("e-foto").value.trim(),
+    videoId: document.getElementById("e-video").value.trim()
+  };
+  saveData(db);
+  closeEditModal();
+  renderAdminList();
+  showToast("💾 Produto atualizado!");
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+// ============================================================
+// ROTEAMENTO POR HASH
+// #admin → painel admin (pede senha)
+// #ferramentas → abre categoria oculta
+// ============================================================
+function handleHash() {
+  const hash = window.location.hash.replace("#","");
+  if (hash === "admin") { showPage("page-login"); return; }
+  if (hash && CATS[hash]) { openCategory(hash); return; }
+  showPage("page-home");
+}
+
+window.addEventListener("hashchange", handleHash);
+handleHash();
+</script>
+</body>
+</html>
 
