@@ -172,8 +172,7 @@ footer { background:#1a1a2e; color:#ccc; padding:36px 20px 24px; margin-top:40px
 <body>
 
 <header>
-  <span class="brand-badge">PRIME GRINGOS</span>
-  <h1>Manual de Instruções e Utilizações</h1>
+  <h1>Manual de Instruções e Utilizações do Produto</h1>
   <p>Selecione a categoria do seu produto para acessar o manual</p>
 </header>
 
@@ -271,9 +270,9 @@ footer { background:#1a1a2e; color:#ccc; padding:36px 20px 24px; margin-top:40px
           <input type="text" id="f-emoji" placeholder="🧸" maxlength="4">
         </div>
         <div class="form-col">
-          <label>ID do Vídeo YouTube</label>
-          <input type="text" id="f-video" placeholder="Ex: dQw4w9WgXcQ">
-          <div class="form-hint">Parte depois de ?v= no link do YouTube</div>
+          <label>Link do Vídeo (YouTube ou Google Drive)</label>
+          <input type="text" id="f-video" placeholder="Cole o link do YouTube ou Google Drive">
+          <div class="form-hint">YouTube: link completo ou ID | Google Drive: link de compartilhamento</div>
         </div>
       </div>
       <div class="form-row">
@@ -329,8 +328,9 @@ footer { background:#1a1a2e; color:#ccc; padding:36px 20px 24px; margin-top:40px
       </div>
       <div class="form-row">
         <div class="form-col full">
-          <label>ID do Vídeo YouTube</label>
+          <label>Link do Vídeo (YouTube ou Google Drive)</label>
           <input type="text" id="e-video">
+          <div class="form-hint">YouTube: link completo ou ID | Google Drive: link de compartilhamento</div>
         </div>
       </div>
       <button class="btn-save" onclick="saveProduto()">💾 Salvar Alterações</button>
@@ -488,13 +488,29 @@ function openVideoModal(cat, idx) {
   `;
   const c = document.getElementById("modal-video-container");
   if (p.videoId && p.videoId.trim()) {
-    // Suporta links normais, Shorts e URLs completas
     let vid = p.videoId.trim();
-    // Se colou o link completo, extrai o ID
-    if (vid.includes('shorts/')) vid = vid.split('shorts/')[1].split('?')[0];
-    else if (vid.includes('watch?v=')) vid = vid.split('watch?v=')[1].split('&')[0];
-    else if (vid.includes('youtu.be/')) vid = vid.split('youtu.be/')[1].split('?')[0];
-    c.innerHTML = `<iframe src="https://www.youtube.com/embed/${vid}?rel=0&modestbranding=1" allowfullscreen></iframe>`;
+    let iframeSrc = "";
+
+    // Google Drive
+    if (vid.includes("drive.google.com")) {
+      let fileId = "";
+      if (vid.includes("/file/d/")) fileId = vid.split("/file/d/")[1].split("/")[0];
+      else if (vid.includes("id=")) fileId = vid.split("id=")[1].split("&")[0];
+      if (fileId) iframeSrc = `https://drive.google.com/file/d/${fileId}/preview`;
+    }
+    // YouTube
+    else {
+      if (vid.includes('shorts/')) vid = vid.split('shorts/')[1].split('?')[0];
+      else if (vid.includes('watch?v=')) vid = vid.split('watch?v=')[1].split('&')[0];
+      else if (vid.includes('youtu.be/')) vid = vid.split('youtu.be/')[1].split('?')[0];
+      iframeSrc = `https://www.youtube.com/embed/${vid}?rel=0&modestbranding=1`;
+    }
+
+    if (iframeSrc) {
+      c.innerHTML = `<iframe src="${iframeSrc}" allowfullscreen allow="autoplay"></iframe>`;
+    } else {
+      c.innerHTML = `<div class="no-video"><span>🎬</span><div>Link inválido</div><div style="font-size:12px">Verifique o link do vídeo</div></div>`;
+    }
   } else {
     c.innerHTML = `<div class="no-video"><span>🎬</span><div>Vídeo em breve</div><div style="font-size:12px">Este produto ainda não possui vídeo</div></div>`;
   }
@@ -668,4 +684,3 @@ handleHash();
 </script>
 </body>
 </html>
-
