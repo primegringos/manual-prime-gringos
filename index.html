@@ -100,8 +100,9 @@ header p { font-size:13px; color:rgba(255,255,255,0.45); position:relative; }
 .cat-btn {
   width:40px; height:40px; border-radius:50%;
   display:flex; align-items:center; justify-content:center;
-  font-size:16px; color:#fff; border:none; cursor:pointer;
+  font-size:18px; line-height:1; color:#fff; border:none; cursor:pointer;
   transition:all 0.18s; font-weight:900; pointer-events:none;
+  text-align:center; padding:0;
 }
 .playbum .cat-btn { background:#e63946; }
 .nelux   .cat-btn { background:#2196f3; }
@@ -254,7 +255,7 @@ footer { background:#1a1a2e; padding:40px 20px 28px; }
 
   <div class="cats-floating">
     <div class="categories" id="home-cats">
-      <div class="cat-card playbum" onclick="openCategory('playbum')">
+      <div class="cat-card playbum" onclick="event.preventDefault();openCategory('playbum')">
         <div style="width:100px;height:100px;flex-shrink:0;background:#f0f0f0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
           <img style="width:100%;height:100%;object-fit:cover;" src="https://images.unsplash.com/photo-1559715541-5daf8a0296d0?w=400&h=400&fit=crop&crop=center&q=90" onerror="this.style.display='none'">
         </div>
@@ -265,7 +266,7 @@ footer { background:#1a1a2e; padding:40px 20px 28px; }
         </div>
         <div class="cat-action"><button class="cat-btn">→</button></div>
       </div>
-      <div class="cat-card nelux" onclick="openCategory('nelux')">
+      <div class="cat-card nelux" onclick="event.preventDefault();openCategory('nelux')">
         <div style="width:100px;height:100px;flex-shrink:0;background:#f0f0f0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
           <img style="width:100%;height:100%;object-fit:cover;" src="https://i.imgur.com/Hhrg8Cq.png" onerror="this.style.display='none'">
         </div>
@@ -276,7 +277,7 @@ footer { background:#1a1a2e; padding:40px 20px 28px; }
         </div>
         <div class="cat-action"><button class="cat-btn">→</button></div>
       </div>
-      <div class="cat-card vaylon" onclick="openCategory('vaylon')">
+      <div class="cat-card vaylon" onclick="event.preventDefault();openCategory('vaylon')">
         <div style="width:100px;height:100px;flex-shrink:0;background:#f0f0f0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
           <img style="width:100%;height:100%;object-fit:cover;" src="https://i.imgur.com/LAzCdKD.png" onerror="this.style.display='none'">
         </div>
@@ -288,7 +289,7 @@ footer { background:#1a1a2e; padding:40px 20px 28px; }
         </div>
         <div class="cat-action"><button class="cat-btn">→</button></div>
       </div>
-      <div class="cat-card prime" onclick="openCategory('prime')">
+      <div class="cat-card prime" onclick="event.preventDefault();openCategory('prime')">
         <div style="width:100px;height:100px;flex-shrink:0;background:#f0f0f0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
           <img style="width:100%;height:100%;object-fit:cover;" src="https://i.imgur.com/3VIUq1o.png" onerror="this.style.display='none'">
         </div>
