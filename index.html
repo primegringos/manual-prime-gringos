@@ -464,6 +464,7 @@ function goHome() { showPage("page-home"); restoreActiveCategory(); history.push
 function openCategory(cat) {
   setActiveCategory(cat);
   const cfg = CATS[cat];
+  if (!cfg) { alert('Categoria não encontrada: ' + cat); return; }
   document.getElementById("cat-title").textContent = cfg.label;
   const grid = document.getElementById("cat-grid");
   grid.innerHTML = "";
