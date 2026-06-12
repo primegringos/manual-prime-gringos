@@ -96,12 +96,12 @@ header p { font-size:13px; color:rgba(255,255,255,0.45); position:relative; }
 .badge-vaylon  { background:#f3e5f5; color:#6a1b9a; }
 .badge-prime   { background:#fff3e0; color:#e65100; }
 
-.cat-action { display:flex; align-items:center; padding:0 16px; flex-shrink:0; }
+.cat-action { display:flex; align-items:center; padding:0 16px; flex-shrink:0; pointer-events:none; }
 .cat-btn {
   width:40px; height:40px; border-radius:50%;
   display:flex; align-items:center; justify-content:center;
   font-size:16px; color:#fff; border:none; cursor:pointer;
-  transition:all 0.18s; font-weight:900;
+  transition:all 0.18s; font-weight:900; pointer-events:none;
 }
 .playbum .cat-btn { background:#e63946; }
 .nelux   .cat-btn { background:#2196f3; }
@@ -624,4 +624,3 @@ handleHash();
 </script>
 </body>
 </html>
-
