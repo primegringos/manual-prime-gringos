@@ -74,11 +74,11 @@ header p { font-size:13px; color:rgba(255,255,255,0.45); position:relative; }
   transition:all 0.2s;
   min-height:92px;
 }
-.cat-card:hover, .cat-card:active { transform:translateY(-3px); }
-.cat-card.playbum:hover, .cat-card.playbum:active { border-color:#e63946; box-shadow:0 12px 32px rgba(230,57,70,0.2); }
-.cat-card.nelux:hover,   .cat-card.nelux:active   { border-color:#2196f3; box-shadow:0 12px 32px rgba(33,150,243,0.2); }
-.cat-card.vaylon:hover,  .cat-card.vaylon:active   { border-color:#9c27b0; box-shadow:0 12px 32px rgba(156,39,176,0.2); }
-.cat-card.prime:hover,   .cat-card.prime:active    { border-color:#ff9800; box-shadow:0 12px 32px rgba(255,152,0,0.2); }
+.cat-card:hover, .cat-card:active, .cat-card.touched, .cat-card.selected { transform:translateY(-3px); }
+.cat-card.playbum:hover, .cat-card.playbum:active, .cat-card.playbum.touched, .cat-card.playbum.selected { border-color:#e63946; box-shadow:0 12px 32px rgba(230,57,70,0.2); }
+.cat-card.nelux:hover,   .cat-card.nelux:active,   .cat-card.nelux.touched,   .cat-card.nelux.selected   { border-color:#2196f3; box-shadow:0 12px 32px rgba(33,150,243,0.2); }
+.cat-card.vaylon:hover,  .cat-card.vaylon:active,  .cat-card.vaylon.touched,  .cat-card.vaylon.selected  { border-color:#9c27b0; box-shadow:0 12px 32px rgba(156,39,176,0.2); }
+.cat-card.prime:hover,   .cat-card.prime:active,   .cat-card.prime.touched,   .cat-card.prime.selected   { border-color:#ff9800; box-shadow:0 12px 32px rgba(255,152,0,0.2); }
 
 .cat-img { width:100px; height:100px; object-fit:cover; flex-shrink:0; background:#f0f0f0; }
 .cat-img-placeholder { width:100px; height:100px; display:flex; align-items:center; justify-content:center; font-size:36px; flex-shrink:0; }
@@ -452,14 +452,16 @@ async function saveData(data) {
 }
 
 loadData().then(() => {
+  restoreActiveCategory();
   const hash = window.location.hash.replace("#","");
   if (hash && hash !== "admin" && CATS[hash]) openCategory(hash);
 });
 
 function showPage(id) { document.querySelectorAll(".page").forEach(p=>p.classList.remove("active")); document.getElementById(id).classList.add("active"); window.scrollTo(0,0); }
-function goHome() { showPage("page-home"); history.pushState("",document.title,window.location.pathname); }
+function goHome() { showPage("page-home"); restoreActiveCategory(); history.pushState("",document.title,window.location.pathname); }
 
 function openCategory(cat) {
+  setActiveCategory(cat);
   const cfg = CATS[cat];
   document.getElementById("cat-title").textContent = cfg.label;
   const grid = document.getElementById("cat-grid");
@@ -585,7 +587,32 @@ function showToast(msg) {
   setTimeout(()=>t.classList.remove("show"),2800);
 }
 
-function handleHash() {
+// Efeito de toque no celular
+document.querySelectorAll('.cat-card').forEach(card => {
+  card.addEventListener('touchstart', () => {
+    card.classList.add('touched');
+  }, { passive: true });
+  card.addEventListener('touchend', () => {
+    setTimeout(() => card.classList.remove('touched'), 300);
+  });
+});
+
+// Destacar categoria selecionada ao voltar
+function setActiveCategory(cat) {
+  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
+  const card = document.querySelector(`.cat-card.${cat}`);
+  if (card) card.classList.add('selected');
+  localStorage.setItem('lastCat', cat);
+}
+
+// Restaurar categoria selecionada ao carregar
+function restoreActiveCategory() {
+  const last = localStorage.getItem('lastCat');
+  if (last) {
+    const card = document.querySelector(`.cat-card.${last}`);
+    if (card) card.classList.add('selected');
+  }
+}
   const hash = window.location.hash.replace("#","");
   if (hash==="admin") { showPage("page-login"); return; }
   if (hash && CATS[hash]) { openCategory(hash); return; }
