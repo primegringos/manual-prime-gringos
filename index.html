@@ -615,6 +615,7 @@ function restoreActiveCategory() {
     if (card) card.classList.add('selected');
   }
 }
+function handleHash() {
   const hash = window.location.hash.replace("#","");
   if (hash==="admin") { showPage("page-login"); return; }
   if (hash && CATS[hash]) { openCategory(hash); return; }
