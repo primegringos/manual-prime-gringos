@@ -72,7 +72,7 @@ header p { font-size:13px; color:rgba(255,255,255,0.45); position:relative; }
   box-shadow:0 4px 20px rgba(0,0,0,0.08);
   border:2px solid transparent;
   transition:all 0.2s;
-  min-height:114px;
+  min-height:92px;
 }
 .cat-card:hover { transform:translateY(-3px); }
 .cat-card.playbum:hover { border-color:#e63946; box-shadow:0 12px 32px rgba(230,57,70,0.2); }
@@ -80,12 +80,12 @@ header p { font-size:13px; color:rgba(255,255,255,0.45); position:relative; }
 .cat-card.vaylon:hover  { border-color:#9c27b0; box-shadow:0 12px 32px rgba(156,39,176,0.2); }
 .cat-card.prime:hover   { border-color:#ff9800; box-shadow:0 12px 32px rgba(255,152,0,0.2); }
 
-.cat-img { width:110px; height:110px; object-fit:cover; flex-shrink:0; image-rendering:high-quality; }
-.cat-img-placeholder { width:110px; height:110px; display:flex; align-items:center; justify-content:center; font-size:38px; flex-shrink:0; }
-.playbum .cat-img-placeholder { background:#fde8ea; }
-.nelux   .cat-img-placeholder { background:#e3f2fd; }
-.vaylon  .cat-img-placeholder { background:#f3e5f5; }
-.prime   .cat-img-placeholder { background:#fff3e0; }
+.cat-img { width:100px; height:100px; object-fit:cover; flex-shrink:0; background:#f0f0f0; }
+.cat-img-placeholder { width:100px; height:100px; display:flex; align-items:center; justify-content:center; font-size:36px; flex-shrink:0; }
+.playbum .cat-img-placeholder { background:#f0f0f0; }
+.nelux   .cat-img-placeholder { background:#f0f0f0; }
+.vaylon  .cat-img-placeholder { background:#f0f0f0; }
+.prime   .cat-img-placeholder { background:#f0f0f0; }
 
 .cat-info { flex:1; padding:14px 16px; display:flex; flex-direction:column; justify-content:center; }
 .cat-info h3 { font-size:15px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#111; margin-bottom:2px; }
@@ -121,11 +121,11 @@ header p { font-size:13px; color:rgba(255,255,255,0.45); position:relative; }
 .product-hint-icon { font-size:20px; flex-shrink:0; }
 .product-hint p { font-size:12px; color:#555; line-height:1.5; }
 
-.products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px; }
+.products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:14px; }
 .product-card { background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,0.06); border:1.5px solid #eee; transition:all 0.2s; cursor:pointer; }
 .product-card:hover { transform:translateY(-4px); box-shadow:0 10px 24px rgba(0,0,0,0.12); }
-.product-thumb { height:150px; display:flex; align-items:center; justify-content:center; font-size:52px; background:#f7f7f7; overflow:hidden; }
-.product-thumb img { width:100%; height:100%; object-fit:contain; }
+.product-thumb { height:70px; display:flex; align-items:center; justify-content:center; font-size:28px; background:#f7f7f7; overflow:hidden; padding:12px; }
+.product-thumb img { width:auto; height:100%; max-width:100%; object-fit:contain; }
 .product-info { padding:14px; }
 .product-info h3 { font-size:13px; font-weight:800; color:#1a1a2e; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px; }
 .product-info p { font-size:11px; color:#999; margin-bottom:10px; line-height:1.5; }
@@ -255,8 +255,9 @@ footer { background:#1a1a2e; padding:40px 20px 28px; }
   <div class="cats-floating">
     <div class="categories" id="home-cats">
       <div class="cat-card playbum" onclick="openCategory('playbum')">
-        <img class="cat-img" src="https://i.imgur.com/agMtZsNl.jpg" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
-        <div class="cat-img-placeholder" style="display:none">🧸</div>
+        <div style="width:100px;height:100px;flex-shrink:0;background:#f0f0f0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+          <img style="width:100%;height:100%;object-fit:cover;" src="https://images.unsplash.com/photo-1559715541-5daf8a0296d0?w=400&h=400&fit=crop&crop=center&q=90" onerror="this.style.display='none'">
+        </div>
         <div class="cat-info">
           <h3>Brinquedos</h3>
           <div class="cat-sub">Montagem, uso e funcionamento</div>
@@ -265,8 +266,9 @@ footer { background:#1a1a2e; padding:40px 20px 28px; }
         <div class="cat-action"><button class="cat-btn">→</button></div>
       </div>
       <div class="cat-card nelux" onclick="openCategory('nelux')">
-        <img class="cat-img" src="https://i.imgur.com/zXNqrlJl.jpg" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
-        <div class="cat-img-placeholder" style="display:none">🏠</div>
+        <div style="width:100px;height:100px;flex-shrink:0;background:#f0f0f0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+          <img style="width:100%;height:100%;object-fit:cover;" src="https://i.imgur.com/Hhrg8Cq.png" onerror="this.style.display='none'">
+        </div>
         <div class="cat-info">
           <h3>Utilidade Doméstica</h3>
           <div class="cat-sub">Uso, limpeza e conservação</div>
@@ -275,7 +277,9 @@ footer { background:#1a1a2e; padding:40px 20px 28px; }
         <div class="cat-action"><button class="cat-btn">→</button></div>
       </div>
       <div class="cat-card vaylon" onclick="openCategory('vaylon')">
-        <img class="cat-img" src="https://i.imgur.com/9TQxkkbl.webp" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
+        <div style="width:100px;height:100px;flex-shrink:0;background:#f0f0f0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+          <img style="width:100%;height:100%;object-fit:cover;" src="https://i.imgur.com/LAzCdKD.png" onerror="this.style.display='none'">
+        </div>
         <div class="cat-img-placeholder" style="display:none">👗</div>
         <div class="cat-info">
           <h3>Moda</h3>
@@ -285,10 +289,11 @@ footer { background:#1a1a2e; padding:40px 20px 28px; }
         <div class="cat-action"><button class="cat-btn">→</button></div>
       </div>
       <div class="cat-card prime" onclick="openCategory('prime')">
-        <img class="cat-img" src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=200&h=150&fit=crop" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
-        <div class="cat-img-placeholder" style="display:none">⭐</div>
+        <div style="width:100px;height:100px;flex-shrink:0;background:#f0f0f0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+          <img style="width:100%;height:100%;object-fit:cover;" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop&crop=center&q=90" onerror="this.style.display='none'">
+        </div>
         <div class="cat-info">
-          <h3>Prime Gringos</h3>
+          <h3>Outros Produtos</h3>
           <div class="cat-sub">Linha geral de produtos</div>
           <span class="badge badge-prime">PRIME GRINGOS</span>
         </div>
