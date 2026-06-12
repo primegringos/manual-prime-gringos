@@ -453,6 +453,7 @@ async function saveData(data) {
 
 loadData().then(() => {
   restoreActiveCategory();
+  initTouchEvents();
   const hash = window.location.hash.replace("#","");
   if (hash && hash !== "admin" && CATS[hash]) openCategory(hash);
 });
@@ -587,15 +588,17 @@ function showToast(msg) {
   setTimeout(()=>t.classList.remove("show"),2800);
 }
 
-// Efeito de toque no celular
-document.querySelectorAll('.cat-card').forEach(card => {
-  card.addEventListener('touchstart', () => {
-    card.classList.add('touched');
-  }, { passive: true });
-  card.addEventListener('touchend', () => {
-    setTimeout(() => card.classList.remove('touched'), 300);
+// Efeito de toque no celular - executar após DOM carregar
+function initTouchEvents() {
+  document.querySelectorAll('.cat-card').forEach(card => {
+    card.addEventListener('touchstart', () => {
+      card.classList.add('touched');
+    }, { passive: true });
+    card.addEventListener('touchend', () => {
+      setTimeout(() => card.classList.remove('touched'), 300);
+    });
   });
-});
+}
 
 // Destacar categoria selecionada ao voltar
 function setActiveCategory(cat) {
